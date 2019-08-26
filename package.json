@@ -1,0 +1,25 @@
+{
+  "name": "eee-outreach-telegram-bot",
+  "version": "1.0.0",
+  "description": "EEE Outreach Telegram Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrawiraGenestonlia/eee-outreach-bot.git"
+  },
+  "author": "Prawira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PrawiraGenestonlia/eee-outreach-bot/issues"
+  },
+  "homepage": "https://github.com/PrawiraGenestonlia/eee-outreach-bot#readme",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "nodemon": "^1.19.1",
+    "telegraf": "^3.32.0"
+  }
+}
