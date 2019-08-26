@@ -1,6 +1,16 @@
 const commandArgs = () => (ctx, next) => {
-  if (ctx.updateType === 'message') {
-    const text = ctx.update.message.text
+  let bCheck = false;
+  console.log("middleware", ctx.update.message.text);
+
+  if (ctx.update.message.text) {
+    if (ctx.update.message.text.length > 4) {
+      bCheck = true;
+    }
+  }
+
+
+  if (ctx.updateType === 'message' && bCheck) {
+    const text = ctx.update.message.text;
     if (text.startsWith('/')) {
       const match = text.match(/^\/([^\s]+)\s?(.+)?/)
       let args = []

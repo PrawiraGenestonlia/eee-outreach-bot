@@ -20,9 +20,11 @@ bot.telegram.getMe().then((bot_informations) => {
 });
 
 bot.start((ctx) => {
-  // console.log(util.inspect(ctx, false, null, true));
+  console.log(util.inspect(ctx, false, null, true));
   ctx.reply('Hello! Feel free to ask me any questions. Expect a delay in the reply because I will connect you to our ambassador');
 });
+
+bot.on('sticker', (ctx) => ctx.reply('👍'))
 
 bot.command('unreplied', (ctx) => {
   if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
