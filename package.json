@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "git-sc": "git add . && git commit -am \".\" && git push origin master "
   },
   "repository": {
     "type": "git",
