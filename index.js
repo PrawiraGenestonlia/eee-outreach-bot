@@ -96,7 +96,7 @@ bot.command('fullhistory', (ctx) => {
 
 bot.hears((ctx) => { return true }, (ctx) => {
   // ctx.reply("I have forwarded your message to the ambassadors.");
-  console.log(util.inspect(ctx, false, null, true));
+  // console.log(util.inspect(ctx, false, null, true));
   // console.log("~~~~~ Bot hears sth ~~~~");
   if (ctx.update.message.from.id != process.env.OUTREACH_BOT_ID && ctx.update.message.chat.id != process.env.OUTREACH_GROUP_ID) {
     let new_query = { name: ctx.update.message.from.first_name, chatId: ctx.update.message.from.id, message: [] };
