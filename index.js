@@ -2,7 +2,7 @@ const Telegraf = require('telegraf');
 const Telegram = require('telegraf/telegram');
 const util = require('util');
 const commandArgsMiddleware = require('./middleware/commandArg.middleware');
-const { start, sticker, contactus } = require('./commands');
+const { start, sticker, contactus, aboutus } = require('./commands');
 require('dotenv').config();
 
 const unreplied_people = [];
@@ -18,6 +18,7 @@ bot.use(commandArgsMiddleware());
 start(bot);
 sticker(bot);
 contactus(bot);
+aboutus(bot);
 
 bot.command('unreplied', (ctx) => {
   if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {

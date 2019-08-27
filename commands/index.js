@@ -1,9 +1,11 @@
 const start = require('./start.commands');
 const sticker = require('./sticker.commands');
 const contactus = require('./contactus.commands');
+const aboutus = require('./aboutus.commands');
 
 module.exports = {
   start,
   sticker,
-  contactus
+  contactus,
+  aboutus
 }
