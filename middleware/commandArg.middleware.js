@@ -1,10 +1,13 @@
 const commandArgs = () => (ctx, next) => {
   let bCheck = false;
-  console.log("middleware", ctx.update.message.text);
-
-  if (ctx.update.message.text) {
-    if (ctx.update.message.text.length > 4) {
-      bCheck = true;
+  // console.log("middleware", ctx.update.message.text);
+  if (ctx.update) {
+    if (ctx.update.message) {
+      if (ctx.update.message.text) {
+        if (ctx.update.message.text.length > 4) {
+          bCheck = true;
+        }
+      }
     }
   }
 

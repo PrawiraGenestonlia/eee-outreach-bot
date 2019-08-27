@@ -1,7 +1,7 @@
 const Telegraf = require('telegraf');
 const Telegram = require('telegraf/telegram');
 const commandArgsMiddleware = require('./middleware/commandArg.middleware');
-const util = require('util');
+const { start, sticker, contactus } = require('./commands');
 require('dotenv').config();
 
 const unreplied_people = [];
@@ -14,17 +14,9 @@ const telegram = new Telegram(process.env.TELEGRAM_BOT_API, {
 
 bot.use(commandArgsMiddleware());
 
-bot.telegram.getMe().then((bot_informations) => {
-  bot.options.username = "eee bot";
-  console.log("Server has initialized bot nickname. Nick: " + bot.options.username);
-});
-
-bot.start((ctx) => {
-  console.log(util.inspect(ctx, false, null, true));
-  ctx.reply('Hello! Feel free to ask me any questions. Expect a delay in the reply because I will connect you to our ambassador');
-});
-
-bot.on('sticker', (ctx) => ctx.reply('👍'))
+start(bot);
+sticker(bot);
+contactus(bot);
 
 bot.command('unreplied', (ctx) => {
   if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
@@ -75,25 +67,58 @@ bot.command('close', (ctx) => {
   }
 });
 
+bot.command('status', (ctx) => {
+  if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
+    ctx.reply("I am healthy");
+  }
+});
+
+bot.command('history', (ctx) => {
+  if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
+    for (let i = 0; i < unreplied_people.length; i++) {
+      if (unreplied_people[i].name.toLowerCase() == ctx.state.command.person.toLowerCase()) {
+        ctx.reply("Unreplied message from " + unreplied_people[i].name + "\n" + unreplied_people[i].message);
+      }
+      else {
+        ctx.reply("There is no unreplied message");
+      }
+      break;
+    }
+  }
+});
+
+bot.command('fullhistory', (ctx) => {
+  if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
+    ctx.reply("Full history: " + JSON.stringify(unreplied_people));
+  }
+});
+
 bot.hears((ctx) => { return true }, (ctx) => {
   // ctx.reply("I have forwarded your message to the ambassadors.");
   // console.log(util.inspect(ctx, false, null, true));
   // console.log("~~~~~ Bot hears sth ~~~~");
-  // console.log("unreplied", unreplied_people);
-  // console.log("fromChatId :", ctx.update.message.from.id);
-  // console.log("first_name: :", ctx.update.message.from.first_name);
-  // console.log("messageId :", ctx.update.message.message_id);
   if (ctx.update.message.from.id != process.env.OUTREACH_BOT_ID && ctx.update.message.chat.id != process.env.OUTREACH_GROUP_ID) {
-    let new_query = { name: ctx.update.message.from.first_name, chatId: ctx.update.message.from.id };
+    let new_query = { name: ctx.update.message.from.first_name, chatId: ctx.update.message.from.id, message: [] };
+    let new_income_message = new_query;
+    let new_message = "";
+    if (ctx.update) {
+      if (ctx.update.message) {
+        if (ctx.update.message.text) {
+          new_income_message.message.push(ctx.update.message.text);
+          new_message = ctx.update.message.text;
+        }
+      }
+    }
     let hasFound = false;
     for (var i = 0; i < unreplied_people.length; i++) {
       if (unreplied_people[i].chatId === ctx.update.message.from.id) {
+        unreplied_people[i].message.push(new_message);
         hasFound = true;
         break;
       }
     }
     if (!hasFound) {
-      unreplied_people.push(new_query);
+      unreplied_people.push(new_income_message);
     }
     telegram.forwardMessage(process.env.OUTREACH_GROUP_ID, ctx.update.message.from.id, ctx.update.message.message_id)
       .then()
