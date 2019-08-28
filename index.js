@@ -2,7 +2,7 @@ const Telegraf = require('telegraf');
 const Telegram = require('telegraf/telegram');
 const util = require('util');
 const commandArgsMiddleware = require('./middleware/commandArg.middleware');
-const { start, sticker, contactus, aboutus, developer } = require('./commands');
+const { start, sticker, contactus, aboutus, developer, unreplied } = require('./commands');
 require('dotenv').config();
 
 const unreplied_people = [];
@@ -20,21 +20,7 @@ sticker(bot);
 contactus(bot);
 aboutus(bot);
 developer(bot);
-
-
-bot.command('unreplied', (ctx) => {
-  if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
-    if (unreplied_people.length) {
-      ctx.reply("List of unreplied individuals").then(() => {
-        unreplied_people.map((unreplied_people, index) => { ctx.reply(index + 1 + ". " + unreplied_people.name) });
-      }
-      ).catch(err => { console.log(err) });
-    }
-    else {
-      ctx.reply("There is no unreplied message");
-    }
-  }
-});
+unreplied(bot, unreplied_people);
 
 bot.command('reply', (ctx) => {
   if (ctx.update.message.chat.id == process.env.OUTREACH_GROUP_ID) {
