@@ -5,6 +5,7 @@ const UnrepliedMessageModel = new Schema({
   unreplied_people: [
     {
       name: String,
+      username: String,
       chatId: Number,
       message: [String]
     }]
