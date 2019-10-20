@@ -43,7 +43,7 @@ async function sync_unreplied_people_db(unreplied_people) {
 }
 
 syncDB().then(() => {
-  // console.log("from db:", unreplied_people)
+  console.log("from db:", unreplied_people)
 }).catch(err => { console.log(err) });
 
 bot.use(commandArgsMiddleware());
